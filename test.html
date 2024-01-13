@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+</head>
+
+<body>
+
+    <h1></h1>
+    <ul></ul>
+
+    <script>
+        const URL = "http://localhost/testTimeout/test.json";
+
+        let ajax = new Promise((resolve, reject) => {
+            let request = new XMLHttpRequest();
+            request.open("GET", URL);
+            request.responseType = "json";
+
+            request.addEventListener("load", function () {
+                if (request.status === 200) {
+                    resolve(request.response);
+                }
+                else {
+                    reject("Erreur du serveur : " + request.status);
+                }
+            }, false);
+
+            request.addEventListener("error", function () {
+                reject("La requête a échoué");
+            }, false);
+
+            request.send();
+        });
+
+        ajax.then(response => displaySquad(response))
+            .catch(msg => console.log("Message d'erreur :", msg));
+
+        /* fonction qui affiche l'escouade " qui s'occupe d'afficher la réponse de la requête a l'écran" */
+        function displaySquad(response){
+            /* On récupére l'élément du body (afin d'injecter les données par la suite) */
+            let body = document.querySelector("body");
+
+            /* On crée la card contenant les informations de l'escouade */
+            let squadCard = document.createElement("div");
+
+            /* On crée un element du titre et on l'ajoute a la carte d'escouade */
+            let squadTitle = document.createElement("h2");
+            squadTitle.textContent = response.squadName;
+            squadCard.appendChild(squadTitle);
+
+            /* On crée la liste des membres */
+            let squadMemberList = document.createElement("ul")
+
+            /* On crée une ligne par membre que l'on ajoute a la liste */
+            response.members.forEach(member => {
+                let squadMember = document.createElement("li");
+                squadMember.textContent = member.name;
+                squadMemberList.appendChild(squadMember);
+            });
+
+            /* On rajoute la liste des membres a la card */
+            squadCard.appendChild(squadMemberList);
+
+            /* On rajoute la card au body */
+            body.appendChild(squadCard);
+
+        }
+    </script>
+    <!-- <script>
+    setInterval (() => {
+        console.log ("->Différé de 3 secondes")
+    },"3000");
+</script>
+<script>
+    setInterval (() => {
+        console.log ("->Différé de 2 secondes")
+    },"2000");
+</script> -->
+
+</body>
+
+</html>

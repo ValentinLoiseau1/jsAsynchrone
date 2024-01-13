@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+</head>
+<body>
+
+    <h1>Escouade Members</h1>
+    <ul id="escouadeList"></ul>
+
+<script>
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("GET", "http://localhost/testTimeout/test.json");
+    xhr.responseType = "json";
+
+    console.log(xhr);
+
+    xhr.onload = function () {
+        if(xhr.status !=200){
+            
+            alert("Erreur" + xhr.status + " : " + xhr.statusText);
+        }   
+        else{
+
+            alert("Réponse : \n" + JSON.stringify(xhr.response));
+        }
+    }
+
+    xhr.onerror = function(){
+        alert(xhr +"La requête a échoué");
+    }
+
+    xhr.send();
+</script>
+<!-- <script>
+    setInterval (() => {
+        console.log ("->Différé de 3 secondes")
+    },"3000");
+</script>
+<script>
+    setInterval (() => {
+        console.log ("->Différé de 2 secondes")
+    },"2000");
+</script> -->
+
+</body>
+</html>
